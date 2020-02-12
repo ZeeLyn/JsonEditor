@@ -1,6 +1,6 @@
 const container = document.getElementById('jsoneditor')
 const options = {
-    modes: ['text', 'code', 'tree', 'form', 'view', "preview"],
+    modes: ['text', 'code', 'tree', 'form', 'view'],
     mode: 'code',
     onModeChange: function(mode) {
         if (mode === "code") {

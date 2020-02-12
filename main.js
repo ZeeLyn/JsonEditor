@@ -1,6 +1,5 @@
 const { app, BrowserWindow } = require('electron')
-const ace = require('ace')
-const jsoneditor = require('jsoneditor')
+
 
 function createWindow() {
     // 创建浏览器窗口
