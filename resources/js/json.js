@@ -63,8 +63,8 @@ var app = new Vue({
             e.preventDefault();
             e.stopPropagation();
             var index = parseInt(e.target.dataset.index);
-            if (this.editors.length == (index + 1)) {
-                this.selectedIndex = index - 1;
+            if (this.selectedIndex > index) {
+                this.selectedIndex -= 1;
             }
             this.editors.splice(index, 1);
         }
