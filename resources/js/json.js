@@ -1,6 +1,6 @@
 const fs = require('fs');
+const electron = require('electron');
 let EditorMode = "code";
-
 var app = new Vue({
     el: '#app',
     data: {
@@ -9,10 +9,31 @@ var app = new Vue({
         editors: []
     },
     mounted: function() {
+
         this.NewTab();
+
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            for (const f of e.dataTransfer.files) {
+                this.OpenFile(f.path);
+                break;
+            }
+        });
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+        var self = this;
+        if (electron && electron.ipcRenderer) {
+            electron.ipcRenderer.on('open-file', function(event, message) {
+                console.log(message); // Prints "whoooooooh!"
+                self.OpenFile(message);
+            });
+        }
     },
     updated: function() {
-        if (!this.AddedEditor)
+        if (!this.addtab)
             return;
         const options = {
             //modes: ['text', 'code', 'tree', 'form', 'view'],
@@ -26,6 +47,7 @@ var app = new Vue({
             }
         }
         const json = {
+            "index": this.tabs,
             'array': [1, 2, 3],
             'boolean': true,
             'null': null,
@@ -36,10 +58,12 @@ var app = new Vue({
             },
             'string': 'Hello World'
         };
-        const container = document.getElementById(this.AddedEditor.id);
+        var data = this.editors[this.selectedIndex];
+        const container = document.getElementById(data.id);
         const editor = new JSONEditor(container, options, json);
         editor.aceEditor.setTheme("ace/theme/tomorrow_night");
-        this.AddedEditor = null;
+        data.editor = editor;
+        this.addtab = false;
     },
     methods: {
         NewTab: function() {
@@ -50,9 +74,11 @@ var app = new Vue({
                 id: "json_editor_" + (this.tabs + 1)
             };
             this.tabs += 1;
+            this.addtab = true;
             this.editors.push(editorData);
-            this.AddedEditor = editorData;
             this.selectedIndex = this.editors.length - 1;
+            this.AddedEditor = editorData;
+
 
         },
         AddTab: function() {
@@ -71,44 +97,17 @@ var app = new Vue({
                 this.selectedIndex = index - 1;
             }
             this.editors.splice(index, 1);
+        },
+        OpenFile: function(file) {
+            var self = this;
+            fs.readFile(file, 'utf-8', function(err, data) {
+                // 读取文件失败/错误
+                if (err) {
+                    throw err;
+                }
+                // 读取文件成功
+                self.editors[self.selectedIndex].editor.aceEditor.setValue(data);
+            });
         }
     }
 });
-
-
-/* 
-
-document.addEventListener('drop', (e) => {
-    if (EditorMode != 'code')
-        return;
-    e.preventDefault();
-    e.stopPropagation();
-
-
-    for (const f of e.dataTransfer.files) {
-        OpenFile(f.path);
-        break;
-    }
-});
-document.addEventListener('dragover', (e) => {
-    if (EditorMode != 'code')
-        return;
-    e.preventDefault();
-    e.stopPropagation();
-});
-
-require('electron').ipcRenderer.on('open-file', function(event, message) {
-    console.log(message); // Prints "whoooooooh!"
-    OpenFile(message);
-});
-
-function OpenFile(file) {
-    fs.readFile(file, 'utf-8', function(err, data) {
-        // 读取文件失败/错误
-        if (err) {
-            throw err;
-        }
-        // 读取文件成功
-        editor.aceEditor.setValue(data);
-    });
-} */
