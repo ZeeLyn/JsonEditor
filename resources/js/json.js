@@ -11,63 +11,36 @@ var app = new Vue({
     mounted: function() {
 
         this.NewTab();
-
+        var self = this;
         document.addEventListener('drop', (e) => {
             e.preventDefault();
             e.stopPropagation();
             for (const f of e.dataTransfer.files) {
-                this.OpenFile(f.path);
-                break;
+                this.NewTab(function(e) {
+                    self.OpenFile(f.path, e.editor);
+                    e.filePath = f.path;
+                    e.title = self.GetFileName(f.path);
+                });
             }
         });
         document.addEventListener('dragover', (e) => {
             e.preventDefault();
             e.stopPropagation();
         });
-        var self = this;
         if (electron && electron.ipcRenderer) {
             electron.ipcRenderer.on('open-file', function(event, message) {
-                console.log(message); // Prints "whoooooooh!"
-                self.OpenFile(message);
+                self.NewTab(function(e) {
+                    self.OpenFile(message, e.editor);
+                    e.filePath = message;
+                    e.title = self.GetFileName(message);
+                });
             });
         }
     },
-    updated: function() {
-        if (!this.addtab)
-            return;
-        const options = {
-            //modes: ['text', 'code', 'tree', 'form', 'view'],
-            mode: EditorMode,
-            onModeChange: function(mode) {
-                EditorMode = mode;
-                if (mode === "code") {
-                    var e = document.querySelector(".ace_editor");
-                    e.setAttribute("class", "ace_editor ace-tomorrow-night ace_dark");
-                }
-            }
-        }
-        const json = {
-            "index": this.tabs,
-            'array': [1, 2, 3],
-            'boolean': true,
-            'null': null,
-            'number': 123,
-            'object': {
-                'a': 'b',
-                'c': 'd'
-            },
-            'string': 'Hello World'
-        };
-        var data = this.editors[this.selectedIndex];
-        const container = document.getElementById(data.id);
-        const editor = new JSONEditor(container, options, json);
-        editor.aceEditor.setTheme("ace/theme/tomorrow_night");
-        data.editor = editor;
-        this.addtab = false;
-    },
     methods: {
-        NewTab: function() {
+        NewTab: function(callback) {
             var editorData = {
+                OnAdded: callback,
                 editor: null,
                 filePath: "a",
                 title: "Untitled-" + (this.tabs + 1),
@@ -78,8 +51,31 @@ var app = new Vue({
             this.editors.push(editorData);
             this.selectedIndex = this.editors.length - 1;
             this.AddedEditor = editorData;
-
-
+            var timer = setTimeout(function() {
+                const options = {
+                    mode: EditorMode
+                };
+                const json = {
+                    "index": this.tabs,
+                    'array': [1, 2, 3],
+                    'boolean': true,
+                    'null': null,
+                    'number': 123,
+                    'object': {
+                        'a': 'b',
+                        'c': 'd'
+                    },
+                    'string': 'Hello World'
+                };
+                const container = document.querySelector("#" + editorData.id);
+                const editor = new JSONEditor(container, options, json);
+                editor.aceEditor.setTheme("ace/theme/tomorrow_night");
+                editorData.editor = editor;
+                if (editorData.OnAdded)
+                    editorData.OnAdded(editorData);
+                clearTimeout(timer);
+            }, 100);
+            return editorData;
         },
         AddTab: function() {
             this.NewTab();
@@ -98,7 +94,7 @@ var app = new Vue({
             }
             this.editors.splice(index, 1);
         },
-        OpenFile: function(file) {
+        OpenFile: function(file, editor) {
             var self = this;
             fs.readFile(file, 'utf-8', function(err, data) {
                 // 读取文件失败/错误
@@ -106,8 +102,15 @@ var app = new Vue({
                     throw err;
                 }
                 // 读取文件成功
-                self.editors[self.selectedIndex].editor.aceEditor.setValue(data);
+                if (!editor)
+                    editor = self.editors[self.selectedIndex].editor;
+                editor.aceEditor.setValue(data);
             });
+        },
+        GetFileName: function(path) {
+            path = path.replace("//g", "\\");
+            let pos = path.lastIndexOf('\\');
+            return path.substring(pos + 1);
         }
     }
 });
