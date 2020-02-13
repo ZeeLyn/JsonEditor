@@ -43,7 +43,6 @@ var app = new Vue({
             'string': 'Hello World'
         };
         const container = document.getElementById(this.AddedEditor.id);
-        console.log(container)
         const editor = new JSONEditor(container, options, json);
         editor.aceEditor.setTheme("ace/theme/tomorrow_night");
         this.AddedEditor = null;
@@ -68,11 +67,13 @@ var app = new Vue({
             this.selectedIndex = e.target.dataset.index;
         },
         CloseTab: function(e) {
-            var index = e.target.dataset.index;
-            this.editors.splice(index, 1);
-            if (index > 0)
+            e.preventDefault();
+            e.stopPropagation();
+            var index = parseInt(e.target.dataset.index);
+            if (this.editors.length == (index + 1)) {
                 this.selectedIndex = index - 1;
-            console.log(this.selectedIndex);
+            }
+            this.editors.splice(index, 1);
         }
     }
 });
