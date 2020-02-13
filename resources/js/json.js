@@ -8,14 +8,7 @@ var app = new Vue({
         editors: []
     },
     mounted: function() {
-        var e = this.NewTab();
-
-    },
-    watch: {
-        editors: function(newVal, oldVal) {
-            console.log(oldVal)
-            console.log(newVal)
-        }
+        this.NewTab();
     },
     updated: function() {
         if (!this.AddedEditor)
