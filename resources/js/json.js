@@ -4,6 +4,7 @@ let EditorMode = "code";
 var app = new Vue({
     el: '#app',
     data: {
+        tabs: 0,
         selectedIndex: 0,
         editors: []
     },
@@ -45,9 +46,10 @@ var app = new Vue({
             var editorData = {
                 editor: null,
                 filePath: "a",
-                title: "Untitled-" + (this.editors.length + 1),
-                id: "json_editor_" + this.editors.length
+                title: "Untitled-" + (this.tabs + 1),
+                id: "json_editor_" + (this.tabs + 1)
             };
+            this.tabs += 1;
             this.editors.push(editorData);
             this.AddedEditor = editorData;
             this.selectedIndex = this.editors.length - 1;
@@ -65,6 +67,8 @@ var app = new Vue({
             var index = parseInt(e.target.dataset.index);
             if (this.selectedIndex > index) {
                 this.selectedIndex -= 1;
+            } else if (this.selectedIndex == index) {
+                this.selectedIndex = index - 1;
             }
             this.editors.splice(index, 1);
         }
