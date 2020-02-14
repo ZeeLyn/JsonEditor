@@ -9,7 +9,6 @@ var app = new Vue({
         editors: []
     },
     mounted: function() {
-
         this.NewTab();
         var self = this;
         document.addEventListener('drop', (e) => {
@@ -71,6 +70,7 @@ var app = new Vue({
             var editorData = {
                 OnAdded: callback,
                 editor: null,
+                hasChange: false,
                 filePath: "",
                 title: "Untitled-" + (this.tabs + 1),
                 id: "json_editor_" + (this.tabs + 1)
@@ -101,6 +101,10 @@ var app = new Vue({
                 const editor = new JSONEditor(container, options, json);
                 editor.aceEditor.setTheme("ace/theme/tomorrow_night");
                 editorData.editor = editor;
+                console.log(editor)
+                editor.options.onChangeText = function() {
+                    editorData.hasChange = true;
+                }
                 if (editorData.OnAdded)
                     editorData.OnAdded(editorData);
                 clearTimeout(timer);
@@ -117,6 +121,9 @@ var app = new Vue({
             e.preventDefault();
             e.stopPropagation();
             var index = parseInt(e.target.dataset.index);
+            var editor = this.editors[index];
+            if (editor.hasChange && !confirm('文档已被更改，关闭将会丢失更改，确定要关闭吗？'))
+                return;
             if (this.selectedIndex > index) {
                 this.selectedIndex -= 1;
             } else if (this.selectedIndex == index) {
@@ -148,7 +155,8 @@ var app = new Vue({
                 if (err) {
                     console.error(err);
                     alert(err.message);
-                }
+                } else
+                    editor.hasChange = false;
             });
         }
     }

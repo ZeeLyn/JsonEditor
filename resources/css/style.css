@@ -34,6 +34,17 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+.tabs .has-change {
+    position: absolute;
+    right: 10px;
+    top: 11px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3575f5;
 }
 
 .tabs .tab:hover {
@@ -42,6 +53,10 @@ html {
 
 .tabs .tab:hover .icon-close {
     visibility: visible;
+}
+
+.tabs .tab:hover .has-change {
+    display: none;
 }
 
 .tabs .active {

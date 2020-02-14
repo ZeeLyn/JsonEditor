@@ -14,6 +14,7 @@
                 <template v-for="(editor,index) in editors">
                     <div class="tab" :class="{active:index==selectedIndex}" :title="editor.filePath" :data-index="index" @click="SwitchTab">
                         {{editor.title}}
+                        <div class="has-change" v-show="editor.hasChange"></div>
                         <img class="icon-close" :data-index="index" src="resources/images/close.png" @click="CloseTab" />
                     </div>
                 </template>
