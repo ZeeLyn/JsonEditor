@@ -28,6 +28,10 @@ var app = new Vue({
             e.stopPropagation();
         });
         if (electron && electron.ipcRenderer) {
+            electron.ipcRenderer.on('new-file', function(event, message) {
+                self.NewTab();
+            });
+
             electron.ipcRenderer.on('open-file', function(event, message) {
                 self.NewTab(function(e) {
                     self.OpenFile(message, e.editor);
@@ -139,7 +143,13 @@ var app = new Vue({
             return path.substring(pos + 1);
         },
         SaveFile: function(editor) {
-
+            var content = editor.editor.getText()
+            fs.writeFile(editor.filePath, content, 'utf-8', function(err) {
+                if (err) {
+                    console.error(err);
+                    alert(err.message);
+                }
+            });
         }
     }
 });

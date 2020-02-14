@@ -52,36 +52,46 @@ function SetMenu() {
     menu.append(new MenuItem({
         label: 'File',
         submenu: [{
-            label: "Open File",
-            click() {
-                console.log("in")
-                dialog.showOpenDialog({
-                    title: 'Open File',
-                    properties: ['openFile'],
-                    filters: [
-                        { name: 'Json', extensions: ['json', 'txt'] },
-                        { name: 'All Files', extensions: ['*'] }
-                    ],
-                    defaultPath: '/Users/<username>/Documents/'
-                }).then(result => {
-                    if (result.canceled)
-                        return;
-                    if (result.filePaths) {
-                        MainWindow.webContents.send('open-file', result.filePaths[0]);
-                    }
-                }).catch(err => {
-                    throw (err);
-                })
+                label: "New File",
+                accelerator: "CmdOrCtrl+N",
+                click() {
+                    MainWindow.webContents.send('new-file', "");
+                }
+            },
+            {
+                label: "Open File",
+                accelerator: "CmdOrCtrl+O",
+                click() {
+                    console.log("in")
+                    dialog.showOpenDialog({
+                        title: 'Open File',
+                        properties: ['openFile'],
+                        filters: [
+                            { name: 'Json', extensions: ['json', 'txt'] },
+                            { name: 'All Files', extensions: ['*'] }
+                        ],
+                        defaultPath: '/Users/<username>/Documents/'
+                    }).then(result => {
+                        if (result.canceled)
+                            return;
+                        if (result.filePaths) {
+                            MainWindow.webContents.send('open-file', result.filePaths[0]);
+                        }
+                    }).catch(err => {
+                        throw (err);
+                    })
+                }
+            }, {
+                label: "Save File",
+                accelerator: "CmdOrCtrl+S",
+                click() {
+                    MainWindow.webContents.send('save-file', 'save file');
+                }
+            }, {
+                label: "Exit",
+                role: "quit"
             }
-        }, {
-            label: "Save File",
-            click() {
-                MainWindow.webContents.send('save-file', 'save file');
-            }
-        }, {
-            label: "Exit",
-            role: "quit"
-        }]
+        ]
     }));
     menu.append(new MenuItem({
         label: "Edit",
@@ -93,7 +103,7 @@ function SetMenu() {
     }));
     ipcMain.on('asynchronous-get-save-file-path', function(event, arg) {
         dialog.showSaveDialog({
-            title: "保存文件",
+            title: "Save File",
             defaultPath: '/Users/<username>/Documents/',
             filters: [
                 { name: 'Json', extensions: ['json', 'txt'] },
