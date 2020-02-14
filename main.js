@@ -89,6 +89,7 @@ function SetMenu() {
                 }
             }, {
                 label: "Exit",
+                accelerator: "CmdOrCtrl+Q",
                 role: "quit"
             }
         ]
