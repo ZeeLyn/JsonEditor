@@ -1,0 +1,23 @@
+{
+    "name": "stringtools",
+    "version": "1.0.0",
+    "description": "string tools",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/1100100/StringTools.git"
+    },
+    "author": "owen",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/1100100/StringTools/issues"
+    },
+    "homepage": "https://github.com/1100100/StringTools#readme",
+    "devDependencies": {
+        "electron": "^8.0.0",
+        "electron-packager": "^14.2.1"
+    }
+}

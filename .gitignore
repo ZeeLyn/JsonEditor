@@ -106,3 +106,5 @@ dist
 stringtools-win32-x64
 
 .vscode
+
+build/
