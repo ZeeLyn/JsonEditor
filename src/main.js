@@ -14,7 +14,7 @@ function createWindow() {
     MainWindow = win;
 
     // and load the index.html of the app.
-    win.loadFile('index.html')
+    win.loadFile('src/index.html')
 
     // 打开开发者工具
     win.webContents.openDevTools();

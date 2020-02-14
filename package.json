@@ -4,10 +4,8 @@
     "description": "string tools",
     "main": "src/main.js",
     "scripts": {
-        "build": "electron-builder --dir",
         "dist": "electron-builder",
-        "pack": "electron-packager ./src/ --overwrite -all",
-        "asar": "asar pack ./src app.asar"
+        "pack": "electron-packager ./src/ --overwrite -all"
     },
     "repository": {
         "type": "git",
@@ -31,8 +29,8 @@
         "directories": {
             "output": "./build"
         },
-
-        "asar": true,
+        "files": ["./src"],
+        "asar": false,
         "win": {
             "icon": "src/resources/images/logo.ico"
         },
