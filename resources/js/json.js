@@ -35,6 +35,31 @@ var app = new Vue({
                     e.title = self.GetFileName(message);
                 });
             });
+
+            electron.ipcRenderer.on('save-file', function(event, message) {
+                console.log(message);
+                var editor = self.editors[self.selectedIndex];
+                if (editor.filePath) {
+                    self.SaveFile(editor);
+                } else {
+                    electron.ipcRenderer.send('asynchronous-get-save-file-path', editor.id);
+                }
+            });
+
+            electron.ipcRenderer.on('set-file-path-save-file', function(event, filePath, id) {
+                var editor;
+                for (var i = 0; i < self.editors.length; i++) {
+                    if (self.editors[i].id != id)
+                        continue;
+                    editor = self.editors[i];
+                }
+                if (!editor)
+                    return;
+                editor.filePath = filePath;
+                editor.title = self.GetFileName(filePath);
+                self.SaveFile(editor);
+            });
+
         }
     },
     methods: {
@@ -42,7 +67,7 @@ var app = new Vue({
             var editorData = {
                 OnAdded: callback,
                 editor: null,
-                filePath: "a",
+                filePath: "",
                 title: "Untitled-" + (this.tabs + 1),
                 id: "json_editor_" + (this.tabs + 1)
             };
@@ -51,12 +76,13 @@ var app = new Vue({
             this.editors.push(editorData);
             this.selectedIndex = this.editors.length - 1;
             this.AddedEditor = editorData;
+            var self = this;
             var timer = setTimeout(function() {
                 const options = {
                     mode: EditorMode
                 };
                 const json = {
-                    "index": this.tabs,
+                    "index": self.tabs,
                     'array': [1, 2, 3],
                     'boolean': true,
                     'null': null,
@@ -111,6 +137,9 @@ var app = new Vue({
             path = path.replace("//g", "\\");
             let pos = path.lastIndexOf('\\');
             return path.substring(pos + 1);
+        },
+        SaveFile: function(editor) {
+
         }
     }
 });

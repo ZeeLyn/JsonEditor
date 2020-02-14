@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, MenuItem, dialog } = require('electron')
+const { app, BrowserWindow, Menu, MenuItem, dialog, ipcMain } = require('electron')
 
 let MainWindow = null;
 
@@ -45,6 +45,8 @@ app.on('activate', () => {
     }
 })
 
+
+
 function SetMenu() {
     const menu = new Menu();
     menu.append(new MenuItem({
@@ -62,7 +64,6 @@ function SetMenu() {
                     ],
                     defaultPath: '/Users/<username>/Documents/'
                 }).then(result => {
-                    console.log(result)
                     if (result.canceled)
                         return;
                     if (result.filePaths) {
@@ -75,7 +76,7 @@ function SetMenu() {
         }, {
             label: "Save File",
             click() {
-                console.log("save")
+                MainWindow.webContents.send('save-file', 'save file');
             }
         }, {
             label: "Exit",
@@ -90,7 +91,20 @@ function SetMenu() {
         label: "View",
         role: "viewMenu"
     }));
-
+    ipcMain.on('asynchronous-get-save-file-path', function(event, arg) {
+        dialog.showSaveDialog({
+            title: "保存文件",
+            defaultPath: '/Users/<username>/Documents/',
+            filters: [
+                { name: 'Json', extensions: ['json', 'txt'] },
+                { name: 'All Files', extensions: ['*'] }
+            ]
+        }).then(function(result) {
+            if (result.canceled)
+                return;
+            MainWindow.webContents.send('set-file-path-save-file', result.filePath, arg);
+        });
+    });
 
     Menu.setApplicationMenu(menu);
 }
