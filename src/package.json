@@ -1,7 +1,7 @@
 {
-    "name": "stringtools",
+    "name": "JsonEditor",
     "version": "1.0.0",
-    "description": "string tools",
+    "description": "Json Editor",
     "main": "main.js",
     "scripts": {
         "start": "electron ."
@@ -10,8 +10,8 @@
         "type": "git",
         "url": "git+https://github.com/1100100/StringTools.git"
     },
-    "author": "owen",
-    "license": "ISC",
+    "author": "OWEN",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/1100100/StringTools/issues"
     },

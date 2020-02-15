@@ -1,7 +1,7 @@
 {
-    "name": "stringtools",
+    "name": "JsonEditor",
     "version": "1.0.0",
-    "description": "string tools",
+    "description": "Json Editor",
     "main": "src/main.js",
     "scripts": {
         "dist": "electron-builder",
@@ -11,8 +11,8 @@
         "type": "git",
         "url": "git+https://github.com/1100100/StringTools.git"
     },
-    "author": "owen",
-    "license": "ISC",
+    "author": "OWEN",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/1100100/StringTools/issues"
     },
@@ -23,14 +23,14 @@
     },
     "dependencies": {},
     "build": {
-        "appId": "com.cilent.app.electronbuild",
-        "productName": "STRING TOOLS",
+        "appId": "com.cilent.app.JsonEditor",
+        "productName": "Json Editor",
         "compression": "store",
         "directories": {
             "output": "./build"
         },
         "files": ["./src"],
-        "asar": false,
+        "asar": true,
         "win": {
             "icon": "logo.ico"
         },
@@ -45,7 +45,7 @@
             "installerHeaderIcon": "logo.ico",
             "createDesktopShortcut": true,
             "createStartMenuShortcut": true,
-            "shortcutName": "STRING TOOLS"
+            "shortcutName": "Json Editor"
         }
     }
 }
