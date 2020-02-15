@@ -24,7 +24,7 @@
     "dependencies": {},
     "build": {
         "appId": "com.cilent.app.electronbuild",
-        "productName": "JSON Editor",
+        "productName": "STRING TOOLS",
         "compression": "store",
         "directories": {
             "output": "./build"
@@ -32,20 +32,20 @@
         "files": ["./src"],
         "asar": false,
         "win": {
-            "icon": "src/resources/images/logo.ico"
+            "icon": "logo.ico"
         },
         "nsis": {
             "oneClick": false,
-            "guid": "xxxx",
+            "guid": "99b04ff9-e584-4dfa-a6ee-ff43da4c7df0",
             "perMachine": true,
             "allowElevation": true,
             "allowToChangeInstallationDirectory": true,
-            "installerIcon": "src/resources/images/logo.ico",
-            "uninstallerIcon": "src/resources/images/logo.ico",
-            "installerHeaderIcon": "src/resources/images/logo.ico",
+            "installerIcon": "logo.ico",
+            "uninstallerIcon": "logo.ico",
+            "installerHeaderIcon": "logo.ico",
             "createDesktopShortcut": true,
             "createStartMenuShortcut": true,
-            "shortcutName": "xxxx"
+            "shortcutName": "STRING TOOLS"
         }
     }
 }
