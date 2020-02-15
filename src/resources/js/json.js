@@ -97,8 +97,11 @@ var app = new Vue({
                     'string': 'Hello World'
                 };
                 const container = document.querySelector("#" + editorData.id);
-                const editor = new JSONEditor(container, options, null);
+                const editor = new JSONEditor(container, options, json);
                 editor.aceEditor.setTheme("ace/theme/tomorrow_night");
+                //console.log(editor.aceEditor.getOptions());
+                //editor.aceEditor.setOptions("enableBasicAutocompletion", true);
+                // editor.aceEditor.setHighlightActiveLine(false);
                 editorData.editor = editor;
                 editor.options.onChange = function() {
                     editorData.hasChange = true;

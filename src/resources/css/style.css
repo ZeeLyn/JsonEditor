@@ -132,3 +132,7 @@ div.jsoneditor-value {
     background: #1d1f21;
     border-top: 1px #25282c solid;
 }
+
+.ace-tomorrow-night .ace_marker-layer .ace_selection {
+    background: #666;
+}
