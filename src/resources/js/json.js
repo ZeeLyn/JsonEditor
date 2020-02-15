@@ -82,7 +82,9 @@ var app = new Vue({
             var self = this;
             var timer = setTimeout(function() {
                 const options = {
-                    mode: EditorMode
+                    mode: EditorMode,
+                    indentation: 4,
+                    escapeUnicode: true
                 };
                 const json = {
                     "index": self.tabs,
@@ -99,9 +101,11 @@ var app = new Vue({
                 const container = document.querySelector("#" + editorData.id);
                 const editor = new JSONEditor(container, options, json);
                 editor.aceEditor.setTheme("ace/theme/tomorrow_night");
-                //console.log(editor.aceEditor.getOptions());
-                //editor.aceEditor.setOptions("enableBasicAutocompletion", true);
-                // editor.aceEditor.setHighlightActiveLine(false);
+                editor.aceEditor.getSession().setTabSize(4);
+                editor.aceEditor.setOptions({
+                    navigateWithinSoftTabs: true,
+                    useSoftTabs: true
+                });
                 editorData.editor = editor;
                 editor.options.onChange = function() {
                     editorData.hasChange = true;

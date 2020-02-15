@@ -62,7 +62,6 @@ function SetMenu() {
                 label: "Open File",
                 accelerator: "CmdOrCtrl+O",
                 click() {
-                    console.log("in")
                     dialog.showOpenDialog({
                         title: 'Open File',
                         properties: ['openFile'],
