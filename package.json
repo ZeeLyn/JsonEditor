@@ -4,6 +4,7 @@
     "description": "Json Editor",
     "main": "src/main.js",
     "scripts": {
+        "start": "electron .",
         "dist": "electron-builder",
         "pack": "electron-packager ./src/ --overwrite -all"
     },
@@ -29,8 +30,8 @@
         "directories": {
             "output": "./build"
         },
-        "files": ["./src"],
-        "asar": true,
+        "files": ["./src", "!src/lib/vue/vue.dev.js"],
+        "asar": false,
         "win": {
             "icon": "logo.ico"
         },
