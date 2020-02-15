@@ -1,1 +1,1 @@
-# StringTools
+# JSON Editor
