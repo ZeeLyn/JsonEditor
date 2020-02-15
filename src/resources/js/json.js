@@ -107,7 +107,7 @@ var app = new Vue({
                     useSoftTabs: true
                 });
                 editorData.editor = editor;
-                editor.options.onChange = function() {
+                editor.options.onChangeText = function() {
                     editorData.hasChange = true;
                 }
                 if (editorData.OnAdded)
