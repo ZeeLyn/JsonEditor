@@ -80,13 +80,15 @@ function SetMenu() {
                         throw (err);
                     })
                 }
-            }, {
+            },
+            {
                 label: "Save File",
                 accelerator: "CmdOrCtrl+S",
                 click() {
                     MainWindow.webContents.send('save-file', 'save file');
                 }
-            }, {
+            }, { type: 'separator' },
+            {
                 label: "Exit",
                 accelerator: "CmdOrCtrl+Q",
                 role: "quit"
