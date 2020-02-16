@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, MenuItem, dialog, ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, MenuItem, dialog, ipcMain } = require('electron');
 
 let MainWindow = null;
 
@@ -16,7 +16,7 @@ function createWindow() {
     win.loadFile('src/index.html')
     win.maximize();
     // 打开开发者工具
-    //win.webContents.openDevTools();
+    win.webContents.openDevTools();
 
     SetMenu();
     win.show();
@@ -95,7 +95,27 @@ function SetMenu() {
     }));
     menu.append(new MenuItem({
         label: "Edit",
-        role: "editMenu"
+        role: "editMenu",
+        // submenu: [
+        //     { label: 'Undo', role: "undo", accelerator: "CmdOrCtrl+Z" },
+        //     { label: 'Redo', role: "redo", accelerator: "CmdOrCtrl+Y" },
+        //     { type: 'separator' },
+        //     { label: 'Cut', role: "cut", accelerator: "CmdOrCtrl+X" },
+        //     { label: 'Copy', role: "copy", accelerator: "CmdOrCtrl+C" },
+        //     { label: 'Paste', role: "paste", accelerator: "CmdOrCtrl+S" },
+        //     { label: 'Delete', role: "delete" },
+        //     { type: 'separator' },
+        //     { label: 'SelectAll', role: "selectAll", accelerator: "CmdOrCtrl+A" },
+        //     { type: 'separator' },
+        //     {
+        //         label: 'Format',
+        //         accelerator: "CmdOrCtrl+\\",
+        //         click() {
+        //             console.log("format")
+
+        //         }
+        //     },
+        // ]
     }));
     menu.append(new MenuItem({
         label: "View",

@@ -1,7 +1,9 @@
 const fs = require('fs');
-const electron = require('electron');
+const { ipcRenderer, remote } = require('electron');
+const { Menu, MenuItem } = remote;
+
 let EditorMode = "code";
-var app = new Vue({
+new Vue({
     el: '#app',
     data: {
         tabs: 0,
@@ -26,12 +28,13 @@ var app = new Vue({
             e.preventDefault();
             e.stopPropagation();
         });
-        if (electron && electron.ipcRenderer) {
-            electron.ipcRenderer.on('new-file', function(event, message) {
+
+        if (ipcRenderer) {
+            ipcRenderer.on('new-file', function(event, message) {
                 self.NewTab();
             });
 
-            electron.ipcRenderer.on('open-file', function(event, message) {
+            ipcRenderer.on('open-file', function(event, message) {
                 self.NewTab(function(e) {
                     self.OpenFile(message, e.editor);
                     e.filePath = message;
@@ -39,16 +42,16 @@ var app = new Vue({
                 });
             });
 
-            electron.ipcRenderer.on('save-file', function(event, message) {
+            ipcRenderer.on('save-file', function(event, message) {
                 var editor = self.editors[self.selectedIndex];
                 if (editor.filePath) {
                     self.SaveFile(editor);
                 } else {
-                    electron.ipcRenderer.send('asynchronous-get-save-file-path', editor.id);
+                    ipcRenderer.send('asynchronous-get-save-file-path', editor.id);
                 }
             });
 
-            electron.ipcRenderer.on('set-file-path-save-file', function(event, filePath, id) {
+            ipcRenderer.on('set-file-path-save-file', function(event, filePath, id) {
                 var editor;
                 for (var i = 0; i < self.editors.length; i++) {
                     if (self.editors[i].id != id)
@@ -61,8 +64,9 @@ var app = new Vue({
                 editor.title = self.GetFileName(filePath);
                 self.SaveFile(editor);
             });
-
         }
+
+
     },
     methods: {
         NewTab: function(callback) {
@@ -84,7 +88,8 @@ var app = new Vue({
                 const options = {
                     mode: EditorMode,
                     indentation: 4,
-                    escapeUnicode: true
+                    escapeUnicode: true,
+                    ace: ace
                 };
                 const json = {
                     "index": self.tabs,
@@ -99,7 +104,7 @@ var app = new Vue({
                     'string': 'Hello World'
                 };
                 const container = document.querySelector("#" + editorData.id);
-                const editor = new JSONEditor(container, options, json);
+                const editor = new JSONEditor(container, options, null);
                 editor.aceEditor.setTheme("ace/theme/tomorrow_night");
                 editor.aceEditor.getSession().setTabSize(4);
                 editor.aceEditor.setOptions({
@@ -112,6 +117,25 @@ var app = new Vue({
                 }
                 if (editorData.OnAdded)
                     editorData.OnAdded(editorData);
+
+                if (Menu) {
+                    const menu = new Menu();
+                    menu.append(new MenuItem({ label: 'Undo', role: "undo", accelerator: "CmdOrCtrl+Z" }));
+                    menu.append(new MenuItem({ label: 'Redo', role: "redo", accelerator: "CmdOrCtrl+Y" }));
+                    menu.append(new MenuItem({ type: 'separator' }));
+                    menu.append(new MenuItem({ label: 'Cut', role: "cut", accelerator: "CmdOrCtrl+X" }));
+                    menu.append(new MenuItem({ label: 'Copy', role: "copy", accelerator: "CmdOrCtrl+C" }));
+                    menu.append(new MenuItem({ label: 'Paste', role: "paste", accelerator: "CmdOrCtrl+S" }));
+                    menu.append(new MenuItem({ label: 'Delete', role: "delete" }));
+                    menu.append(new MenuItem({ type: 'separator' }));
+                    menu.append(new MenuItem({ label: 'SelectAll', role: "selectAll", accelerator: "CmdOrCtrl+A" }));
+
+                    container.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        menu.popup({ window: remote.getCurrentWindow() });
+                    }, false);
+
+                }
                 clearTimeout(timer);
             }, 100);
             return editorData;

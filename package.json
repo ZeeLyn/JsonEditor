@@ -1,6 +1,6 @@
 {
     "name": "JsonEditor",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Json Editor",
     "main": "src/main.js",
     "scripts": {
@@ -22,7 +22,7 @@
         "electron": "^8.0.0",
         "electron-packager": "^14.2.1"
     },
-    "dependencies": {},
+    "dependencies": { "electron": "^8.0.0" },
     "build": {
         "appId": "com.cilent.app.JsonEditor",
         "productName": "Json Editor",
