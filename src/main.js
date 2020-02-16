@@ -16,7 +16,7 @@ function createWindow() {
     win.loadFile('src/index.html')
     win.maximize();
     // 打开开发者工具
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
 
     SetMenu();
     win.show();
