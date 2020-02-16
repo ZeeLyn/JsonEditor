@@ -22,7 +22,7 @@
         "electron": "^8.0.0",
         "electron-packager": "^14.2.1"
     },
-    "dependencies": { "electron": "^8.0.0" },
+    "dependencies": {},
     "build": {
         "appId": "com.cilent.app.JsonEditor",
         "productName": "Json Editor",
