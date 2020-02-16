@@ -131,7 +131,6 @@ function SetMenu() {
             click() {
                 dialog.showMessageBox({
                     title: "About Json Editor",
-                    icon: "src/resources/images/logo.png",
                     message: "Json Editor V1.0.1"
                 });
             }

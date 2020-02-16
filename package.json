@@ -31,7 +31,7 @@
             "output": "./build"
         },
         "files": ["src/", "!src/lib/vue/vue.dev.js"],
-        "asar": true,
+        "asar": false,
         "win": {
             "icon": "logo.ico"
         },
