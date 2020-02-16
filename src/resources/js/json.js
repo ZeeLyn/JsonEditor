@@ -165,6 +165,7 @@ new Vue({
             fs.readFile(file, 'utf-8', function(err, data) {
                 // 读取文件失败/错误
                 if (err) {
+                    alert(err.message);
                     throw err;
                 }
                 // 读取文件成功

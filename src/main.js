@@ -121,6 +121,20 @@ function SetMenu() {
         label: "View",
         role: "viewMenu"
     }));
+
+    menu.append(new MenuItem({
+        label: "Help",
+        submenu: [{
+            label: "About",
+            click() {
+                dialog.showMessageBox({
+                    title: "About Json Editor",
+                    icon: "src/resources/images/logo.png",
+                    message: "Json Editor V1.0.1"
+                });
+            }
+        }]
+    }));
     ipcMain.on('asynchronous-get-save-file-path', function(event, arg) {
         dialog.showSaveDialog({
             title: "Save File",

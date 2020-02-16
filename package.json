@@ -1,5 +1,5 @@
 {
-    "name": "JsonEditor",
+    "name": "json-editor",
     "version": "1.0.1",
     "description": "Json Editor",
     "main": "src/main.js",
