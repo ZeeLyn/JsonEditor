@@ -131,7 +131,7 @@ function SetMenu() {
             click() {
                 dialog.showMessageBox({
                     title: "About Json Editor",
-                    message: "Json Editor V1.0.1"
+                    message: "Json Editor V1.0.2"
                 });
             }
         }]

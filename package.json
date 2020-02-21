@@ -1,6 +1,6 @@
 {
     "name": "json-editor",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Json Editor",
     "main": "src/main.js",
     "scripts": {
