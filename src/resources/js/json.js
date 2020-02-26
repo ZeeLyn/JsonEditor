@@ -130,7 +130,7 @@ new Vue({
                     menu.append(new MenuItem({ type: 'separator' }));
                     menu.append(new MenuItem({ label: 'SelectAll', role: "selectAll", accelerator: "CmdOrCtrl+A" }));
 
-                    document.querySelector(".ace_editor").addEventListener('contextmenu', (e) => {
+                    document.querySelector("#" + editorData.id + " .ace_editor").addEventListener('contextmenu', (e) => {
                         e.preventDefault();
                         menu.popup({ window: remote.getCurrentWindow() });
                     }, false);
