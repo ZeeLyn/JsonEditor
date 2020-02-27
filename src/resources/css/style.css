@@ -51,6 +51,14 @@ html {
     background: #1d1f21;
 }
 
+.tabs .tab:last-child:hover {
+    background: #25282c;
+}
+
+.tabs .tab:last-child img:hover {
+    content: url('../images/add.png');
+}
+
 .tabs .tab:hover .icon-close {
     visibility: visible;
 }
@@ -65,7 +73,7 @@ html {
 }
 
 .tabs .tab img {
-    width: 15px;
+    width: 16px;
 }
 
 .tabs .tab .icon-close {
